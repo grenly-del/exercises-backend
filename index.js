@@ -24,6 +24,11 @@ app.get('/users', (req, res) => {
     res.status(200).json(users)
 })
 
+app.get('*', (req, res) => {
+    res.setHeader('Content-Type','text/plain')
+    res.status(404).send('404 Not Found')
+})
+
 
 
 const hostname = '127.0.0.1'
