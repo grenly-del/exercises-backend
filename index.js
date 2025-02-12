@@ -1,60 +1,30 @@
-
 const express = require('express')
+const moment = require('moment')
 const app = express()
+const {users} = require('./users')
 
-
-// Routing
 app.get('/', (req, res) => {
-    res.write('Hello World')
-    res.end()
+    res.setHeader('Content-Type', 'text/plain')
+    res.status(200).send('This is the home page')
 })
 
 app.get('/about', (req, res) => {
+    res.setHeader('Content-Type', 'text/json')
     res.status(200).json({
-        status: "success",
-        message: "About page",
-        data: []
+        status: 'success',
+        message: 'response success',
+        description: 'Exercise #2',
+        date: moment().format()
     })
 })
 
-app.patch('/contoh', (req, res) => {
-    res.send('Request contoh dengan method PATCH')  
-})
-app.post('/contoh', (req, res) => {
-    res.send('Request contoh dengan method POST')
-})
 
-app.put('/contoh', (req,res) => {
-    res.send('Request contoh dengan PUT')
-})
-
-app.delete('/contoh', (req, res) => {
-    res.send('Request contoh dengan Delete')
-})
-
-// Routing Semua Method
-app.all('/universal', (req, res) => {
-    res.send(`Request method ${req.method}`)
-})
-
-// Routing Dinamis
-// 1. Menggunakan params
-
-app.get('/post/:id', (req, res) => {
-    res.send(`Artikel ke - ${req.params.id}`)
-})
-
-// 2. Menggunakan Query String
-
-app.get('/post', (req, res) => {
-    const {page, sort} = req.query
-    res.send(`Artikel di page - ${page} dan sort - ${sort}`)
+app.get('/users', (req, res) => {
+    res.setHeader('Content-Type', 'text/json')
+    res.status(200).json(users)
 })
 
 
-
-
-// Config Server
 
 const hostname = '127.0.0.1'
 const port = 3002
