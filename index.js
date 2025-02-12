@@ -44,7 +44,12 @@ app.get('/post/:id', (req, res) => {
     res.send(`Artikel ke - ${req.params.id}`)
 })
 
+// 2. Menggunakan Query String
 
+app.get('/post', (req, res) => {
+    const {page, sort} = req.query
+    res.send(`Artikel di page - ${page} dan sort - ${sort}`)
+})
 
 
 
