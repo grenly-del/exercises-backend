@@ -1,7 +1,31 @@
 const express = require('express')
 const moment = require('moment')
+const morgan = require('morgan')
+const errorHandler = require('errorhandler')
+
 const app = express()
 const {users} = require('./users')
+
+
+
+// MIDDLEWARE LOG
+const middleware1 = (req, res, next) => {
+    console.log('Middleware')
+    next()
+}
+const middleware2 = (req, res, next) => {
+    console.log(moment().format('MMMM DD YYYY, hh:mm:ss a'))
+    console.log(req.originalUrl + ' '+req.ip)
+    next()
+}
+
+
+app.use(middleware1, middleware2)
+app.use(morgan('combined'))
+
+
+
+// ROUTE
 
 app.get('/', (req, res) => {
     res.setHeader('Content-Type', 'text/plain')
@@ -24,11 +48,17 @@ app.get('/users', (req, res) => {
     res.status(200).json(users)
 })
 
-app.get('*', (req, res) => {
-    res.setHeader('Content-Type','text/plain')
-    res.status(404).send('404 Not Found')
-})
 
+
+
+// MIDDLEWARE NOT FOUND
+
+app.use((req, res, next) => {
+    res.status(404).json({
+        status: 'Error',
+        message: 'Resource tidak di temukan!'
+    })
+})
 
 
 const hostname = '127.0.0.1'
