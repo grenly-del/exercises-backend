@@ -62,6 +62,8 @@ app.get('/users', (req, res) => {
     }
 })
 
+
+// Download 
 app.get('/download', (req, res) => {
     const fileName = 'Poster_IG.jpg'
     res.download(path.join(__dirname, 'public', fileName), "PosterDown.jpg")
