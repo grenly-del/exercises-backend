@@ -2,9 +2,10 @@ const express = require('express')
 const moment = require('moment')
 const morgan = require('morgan')
 const errorHandler = require('errorhandler')
+const path = require('path')
 
 const app = express()
-const {users} = require('./users')
+const {users} = require('./exercise4/users')
 
 
 
@@ -45,7 +46,19 @@ app.get('/about', (req, res) => {
 
 app.get('/users', (req, res) => {
     res.setHeader('Content-Type', 'text/json')
-    res.status(200).json(users)
+    if(users.length > 0) {
+        res.status(200).json(users)
+    }else {
+        res.status(404).json({
+            status: "error",
+   	        message: "terjadi kesalahan pada server",
+        })
+    }
+})
+
+app.get('/download', (req, res) => {
+    const fileName = 'Poster_IG.jpg'
+    res.download(path.join(__dirname, 'public', fileName), "PosterDown.jpg")
 })
 
 
