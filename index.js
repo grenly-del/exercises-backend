@@ -2,7 +2,9 @@ const express = require('express')
 const moment = require('moment')
 const morgan = require('morgan')
 const errorHandler = require('errorhandler')
+const multerMiddleware = require('./multer')
 const path = require('path')
+const cors = require('cors')
 
 const app = express()
 const {users} = require('./exercise4/users')
@@ -13,7 +15,10 @@ const {users} = require('./exercise4/users')
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 app.use(express.static('public'))
-
+app.use(cors({
+    origin: 'http://127.0.0.1:5500',
+    methods: ['GET', 'PUT']
+}))
 
 // MIDDLEWARE LOG
 const middleware1 = (req, res, next) => {
@@ -49,6 +54,15 @@ app.get('/about', (req, res) => {
     })
 })
 
+app.put('/about', (req, res) => {
+    res.setHeader('Content-Type', 'text/json')
+    res.status(200).json({
+        status: 'success',
+        message: 'response success',
+        description: 'Exercise #2',
+        date: moment().format()
+    })
+})
 
 app.get('/users', (req, res) => {
     res.setHeader('Content-Type', 'text/json')
@@ -69,6 +83,10 @@ app.get('/download', (req, res) => {
     res.download(path.join(__dirname, 'public', fileName), "PosterDown.jpg")
 })
 
+
+
+// Middleware Multer
+app.use('/upload', multerMiddleware)
 
 
 
